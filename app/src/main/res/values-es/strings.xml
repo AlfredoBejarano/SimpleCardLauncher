@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Simple Card Launcher</string>
+    <string name="app_not_installed">Esa app no esta instalada</string>
+    <string name="app_cant_be_removed">La app no se pudo desinstalar</string>
+</resources>
