@@ -2,4 +2,11 @@
     <string name="app_name">Simple Card Launcher</string>
     <string name="app_not_installed">The app is not installed</string>
     <string name="app_cant_be_removed">The app can\'t be uninstalled</string>
+    <string name="permission_required">We need your permission</string>
+    <string name="permission_advice">In order to show your current Wallpaper, we need to read your device\'s storage</string>
+    <string name="yes" translatable="false">Ok</string>
+    <string name="no" translatable="false">No</string>
+    <string name="permission_denied_message">The default wallpaper will be set as the app couldn\'t read your device\'s storage.</string>
+    <string name="close">Close</string>
+    <string name="grant">Grant permission</string>
 </resources>

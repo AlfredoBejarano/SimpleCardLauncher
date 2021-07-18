@@ -3,4 +3,9 @@
     <string name="app_name">Simple Card Launcher</string>
     <string name="app_not_installed">Esa app no esta instalada</string>
     <string name="app_cant_be_removed">La app no se pudo desinstalar</string>
+    <string name="permission_required">Necesitamos tu permiso</string>
+    <string name="permission_advice">Para poder mostrar tu fondo de pantalla actual, necesitamos poder acceder al almacenamiento de tu dispositivo.</string>
+    <string name="permission_denied_message">El fonde de pantalla por defecto se mostrará ya que la app no pudo acceder a tu almacenamiento interno</string>
+    <string name="close">Cerrar</string>
+    <string name="grant">Otorgar permiso</string>
 </resources>

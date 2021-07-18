@@ -1,12 +1,16 @@
 package com.alfredobejarano.simplecardlauncher.view
 
+import android.Manifest.permission.READ_EXTERNAL_STORAGE
 import android.app.Activity
 import android.app.WallpaperManager
 import android.content.Intent
+import android.content.pm.PackageManager.PERMISSION_GRANTED
 import android.net.Uri
 import android.os.Bundle
 import android.view.View
+import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.alfredobejarano.simplecardlauncher.R
@@ -17,6 +21,8 @@ import com.alfredobejarano.simplecardlauncher.presenter.AppsPresenter
 import com.alfredobejarano.simplecardlauncher.presenter.Utils
 import com.google.android.material.snackbar.Snackbar
 import com.google.android.material.snackbar.Snackbar.LENGTH_SHORT
+
+const val PERMISSIONS_REQUEST_CODE = 5
 
 class MainActivity : AppCompatActivity() {
 	var mApp: Int = 0
@@ -31,6 +37,18 @@ class MainActivity : AppCompatActivity() {
 		binding = ActivityMainBinding.inflate(layoutInflater)
 		setContentView(binding.root)
 		AppsPresenter(this)
+		val grantedStorage = ActivityCompat.checkSelfPermission(this, READ_EXTERNAL_STORAGE) == PERMISSION_GRANTED
+		if (!grantedStorage) {
+			AlertDialog.Builder(this)
+				.setTitle(R.string.permission_required)
+				.setMessage(R.string.permission_advice)
+				.setPositiveButton(R.string.yes) { dialog, _ ->
+					ActivityCompat.requestPermissions(this, arrayOf(READ_EXTERNAL_STORAGE), PERMISSIONS_REQUEST_CODE)
+					dialog.dismiss()
+				}.setNegativeButton(R.string.no) { dialog, _ ->
+					dialog.dismiss()
+				}.show()
+		}
 	}
 
 	/**
@@ -38,11 +56,7 @@ class MainActivity : AppCompatActivity() {
 	 */
 	override fun onResume() {
 		super.onResume()
-		try {
-			binding.launcherWallpaper.setImageDrawable(WallpaperManager.getInstance(this).drawable)
-		} catch (e: Exception) {
-			binding.launcherWallpaper.setImageDrawable(ContextCompat.getDrawable(this, R.drawable.default_wallpaper))
-		}
+		setWallpaper()
 	}
 
 	/**
@@ -50,6 +64,14 @@ class MainActivity : AppCompatActivity() {
 	 */
 	override fun onBackPressed() {
 		// Do nothing.
+	}
+
+	private fun setWallpaper() {
+		try {
+			binding.launcherWallpaper.setImageDrawable(WallpaperManager.getInstance(this).drawable)
+		} catch (e: Exception) {
+			binding.launcherWallpaper.setImageDrawable(ContextCompat.getDrawable(this, R.drawable.default_wallpaper))
+		}
 	}
 
 	/**
@@ -90,6 +112,26 @@ class MainActivity : AppCompatActivity() {
 			}
 		} else {
 			super.onActivityResult(requestCode, resultCode, data)
+		}
+	}
+
+	override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<out String>, grantResults: IntArray) {
+		if (requestCode == PERMISSIONS_REQUEST_CODE && grantResults.isNotEmpty()) {
+			if (grantResults.first() == PERMISSION_GRANTED) {
+				setWallpaper()
+			} else {
+				AlertDialog.Builder(this)
+					.setTitle(R.string.permission_required)
+					.setMessage(R.string.permission_denied_message)
+					.setPositiveButton(R.string.close) { dialog, _ ->
+						dialog.dismiss()
+					}.setNegativeButton(R.string.grant) { dialog, _ ->
+						ActivityCompat.requestPermissions(this, arrayOf(READ_EXTERNAL_STORAGE), PERMISSIONS_REQUEST_CODE)
+						dialog.dismiss()
+					}.show()
+			}
+		} else {
+			super.onRequestPermissionsResult(requestCode, permissions, grantResults)
 		}
 	}
 
