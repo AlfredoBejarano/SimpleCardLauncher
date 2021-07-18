@@ -11,6 +11,10 @@ import android.view.View
 import com.alfredobejarano.simplecardlauncher.R
 import com.alfredobejarano.simplecardlauncher.model.App
 import com.alfredobejarano.simplecardlauncher.view.MainActivity
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 
 /**
  * @author @AlfredoBejarano
@@ -22,14 +26,19 @@ class AppsPresenter(view: MainActivity) {
 
 	init {
 		view.displayLoadingDialog(View.VISIBLE)
-		view.setup(getApps())
-		view.displayLoadingDialog(View.GONE)
+		CoroutineScope(Dispatchers.IO).launch {
+			val apps = getApps()
+			withContext(Dispatchers.Main) {
+				view.setup(apps)
+				view.displayLoadingDialog(View.GONE)
+			}
+		}
 	}
 
 	/**
 	 * Retrieves the apps from the device.
 	 */
-	fun getApps(): MutableList<App> {
+	private fun getApps(): MutableList<App> {
 		val apps: MutableList<App> = arrayListOf()
 		val packageManager: PackageManager = view.packageManager
 

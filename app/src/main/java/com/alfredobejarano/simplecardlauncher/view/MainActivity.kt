@@ -8,14 +8,13 @@ import android.os.Bundle
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
-import androidx.core.view.isVisible
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.alfredobejarano.simplecardlauncher.R
+import com.alfredobejarano.simplecardlauncher.adapter.AppsListAdapter
+import com.alfredobejarano.simplecardlauncher.databinding.ActivityMainBinding
 import com.alfredobejarano.simplecardlauncher.model.App
 import com.alfredobejarano.simplecardlauncher.presenter.AppsPresenter
 import com.alfredobejarano.simplecardlauncher.presenter.Utils
-import com.alfredobejarano.simplecardlauncher.adapter.AppsListAdapter
-import com.alfredobejarano.simplecardlauncher.databinding.ActivityMainBinding
 import com.google.android.material.snackbar.Snackbar
 import com.google.android.material.snackbar.Snackbar.LENGTH_SHORT
 
@@ -73,7 +72,7 @@ class MainActivity : AppCompatActivity() {
 	 * Removes an app.
 	 */
 	fun uninstallApp(pkg: String) {
-		val intent = Intent(Intent.ACTION_UNINSTALL_PACKAGE)
+		val intent = Intent(Intent.ACTION_DELETE)
 		intent.data = Uri.parse("package:$pkg")
 		intent.putExtra(Intent.EXTRA_RETURN_RESULT, true)
 		startActivityForResult(intent, UNINSTALL_REQUEST_CODE)
