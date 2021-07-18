@@ -1,4 +1,4 @@
-package com.alfredobejarano.simplecardlauncher.presenter.broadcastrecevier
+package com.alfredobejarano.simplecardlauncher.receivers
 
 import android.content.BroadcastReceiver
 import android.content.Context
